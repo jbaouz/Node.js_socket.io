@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Robot</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        img{
+            height: auto;
+            width: 150px;
+        }
+    </style>
+  </head>
+  <body>
+    
+    <img src="/Bender_Rodriguez.jpg" id='robot'>
+
+    <script>
+      
+    var socket = io()
+    var posleft=0
+    var postop=0
+    robot = document.getElementById('robot')
+    robot.style.position= 'absolute'
+    robot.style.left='200px'
+    robot.style.top='200px'
+
+    socket.on('connect',()=>{
+      // send id robot to the server
+      socket.emit('robot',socket.id);
+    })
+
+    socket.on('move',(msg)=>{
+        console.log(msg)
+        switch(msg) {
+        case 'up':
+        postop-=10
+          robot.style.top=postop+"px"
+          break
+        case 'down':
+        postop+=10
+          robot.style.top=postop+"px"
+          break
+        case 'left':
+        posleft-=10
+          robot.style.left=posleft+"px"
+          break
+        case 'right':
+        posleft+=10
+          robot.style.left=posleft+"px"
+          break    
+      }
+      console.log(postop,posleft)
+    })
+
+    </script>
+  </body>
+</html>

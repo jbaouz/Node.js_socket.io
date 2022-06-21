@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Manette</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+      button{
+        width: 70px;
+      }
+      fieldset{
+        width: fit-content;
+      }
+    </style>
+  </head>
+  <body>
+    <fieldset>
+        <legend><h2>Manette</h2></legend>
+        <table>
+            <tr>
+                <td></td>
+                <td><button id="up">UP</button></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><button id="left">LEFT</button></td>
+                <td></td>
+                <td><button id="right">RIGHT</button></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><button id="down">DOWN</button></td>
+                <td></td>
+            </tr>
+        </table>
+        <div id="erreur"></div>
+    </fieldset>
+      
+    <script>
+      
+    var socket = io()
+    // message from the server
+    socket.on("connect",()=>{
+      // pour renvoyer l'id renouvelé à chaque init du "socket"
+      socket.emit("manette",socket.id);
+    })
+
+    let mybutts = document.getElementsByTagName("button")
+      for (const butt of mybutts) {
+        butt.addEventListener("click",function(){
+          erreur.innerText = ""
+          // send a message to the server (id des buttons)
+          socket.emit('command',this.id)
+      }
+    )}
+    // message from the server
+    socket.on("norobot",()=>{
+      erreur.innerText = "pas de robot !!! "
+    })
+
+    </script>
+  </body>
+</html>
